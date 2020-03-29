@@ -1,0 +1,2 @@
+# Object-Oriented-Programming-with-Python
+The research institute is responsible for researching and developing methods for animals. It keeps animals in controlled environments and monitors their progress under controlled feeding. You can find some examples of existing manual records of the research institute. You are expected to develop an application to effectively keep track of these details and provide necessary reports
