@@ -9,28 +9,17 @@ class Animal_feeding:
         day = now.strftime("%d")
         time = now.strftime("%H:%M")
         date = day+"/"+month+"/"+year
-        flag = 1
-        i=0
-        with open('feeding.txt') as f:
-            lines = f.read().splitlines()
-            for line in lines:
-                if line.count(str(a_id)) and line.count(date):
-                    i += 1
-            if i == 2:
-                flag = 0
-                return False
-        if flag==1:
-            self.date = date
-            self.time = time
-            self.foodName = foodName
-            self.manufacturer = manufacturer
-            self.weight = weight
-            self.staff = staff
+        self.animalNo = a_id
+        self.date = date
+        self.time = time
+        self.foodName = foodName
+        self.manufacturer = manufacturer
+        self.weight = weight
+        self.staff = staff
 
-            f=open("feeding.txt", "a+")
-            f.write("\n"+str(a_id)+' '+date+" "+time+" "+ foodName+" "+manufacturer+" "+str(weight)+" "+staff)
-            return True
-    
+    def getDetailsofAnimalFeed(self):
+        return {"animalNo": self.a_id, "foodName": self.foodName, "manufacturer": self.manufacturer, "weight": self.weight, "staff": self.staff}
+
     def feedingDetails(self, id):
         with open('feeding.txt') as f:
             i=0

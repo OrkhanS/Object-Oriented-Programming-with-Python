@@ -2,11 +2,12 @@ from random import randint
 
 
 class Food:
-    def set_food(self, name, manufacturer):
+    def set_food(self, name, manufacturer, weight):
         self.name = name
         self.manufacturer = manufacturer
-        f = open("food.txt", "a+")
-        f.write("\n"+name+' '+manufacturer)
+        self.weight = weight
+    def getDetailsFood(self):
+        return {"name": self.name, "manufacturer": self.manufacturer, "weight": self.weight}
 
     def foodforGivenAnimal(self, id):
         with open('feeding.txt') as f:
