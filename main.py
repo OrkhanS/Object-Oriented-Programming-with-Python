@@ -362,7 +362,7 @@ def staffWhoObserved():
     main()
 
 def foodsGiven():
-     # try:
+    # try:
     print("Please type Following details: \n")
     animalnum = input("AnimalNo: ")
     animals = appliaction.getAllAnimal()
