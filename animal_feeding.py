@@ -2,23 +2,21 @@ from random import randint
 from datetime import datetime
 
 class Animal_feeding:  
-    def feed(self, a_id, foodName, manufacturer, weight, staff):
+    def feed(self, animal, food, staff):
         now = datetime.now()
         year = now.strftime("%Y")
         month = now.strftime("%m")
         day = now.strftime("%d")
         time = now.strftime("%H:%M")
         date = day+"/"+month+"/"+year
-        self.animalNo = a_id
+        self.animal = animal
         self.date = date
         self.time = time
-        self.foodName = foodName
-        self.manufacturer = manufacturer
-        self.weight = weight
+        self.food = food
         self.staff = staff
 
     def getDetailsofAnimalFeed(self):
-        return {"animalNo": self.a_id, "foodName": self.foodName, "manufacturer": self.manufacturer, "weight": self.weight, "staff": self.staff}
+        return {"animal": self.animal,"date":self.date, "time":self.time, "food": self.food, "staff": self.staff}
 
     def feedingDetails(self, id):
         with open('feeding.txt') as f:

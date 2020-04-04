@@ -7,6 +7,8 @@ import random
 from application import Application
 from random import randint
 from datetime import datetime
+from dateutil.parser import parse
+
 
 appliaction = Application()
 
@@ -178,20 +180,22 @@ def animalFeed():
     for animal in animals:
         if animal_id == animal.animalNo:
             flagAnimal = 0
+            animalObject = animal
     if flagAnimal == 1:
         print("\nThere is no such animal, try again!!")
 
     for staff in staffs:
         if staff_id == staff.staff_id:
+            staffObject = staff
             flagStaff = 0
+
     if flagStaff == 1:
         print("\nThere is no such staff, try again!!")
 
     for food in foods:
         if foodName == food.name:
             flagFood = 0
-            weight = food.weight
-            manufacturer = food.manufacturer
+            foodObject = food
     if flagFood == 1:
             print("\nThere is no such food, try again!!")
 
@@ -200,12 +204,12 @@ def animalFeed():
         count = 1
         feedingDetails = appliaction.getAllFeedingDetails()
         for feeding in feedingDetails:
-            if str(animal_id) == str(feeding.animalNo) and str(date) == str(feeding.date):
+            if str(animal_id) == str(feeding.animal.animalNo) and str(date) == str(feeding.date):
                 count+=1
         if count == 2:
             print("Uh-oh, you cannot feed an animal more than 2 times a day!!")
         else:
-            newAnimalFeed.feed(animalFeed, foodName, manufacturer, weight, staff_id)
+            newAnimalFeed.feed(animalObject, foodObject, staffObject)
             appliaction.addFeedingToList(newAnimalFeed)
             print("\nA feeding record added successfully\n")
         
@@ -222,27 +226,27 @@ def feedingDetails():
     animals = appliaction.getAllAnimal()
     feeding = appliaction.getAllFeedingDetails()
     flagAnimal = 1
-    for animal in feeding:
-        if animalnum == animal.animalNo:
+    for fed in feeding:
+        fed.animal
+        if animalnum == fed.animal.animalNo:
             flagAnimal = 0
-    if flagAnimal == 0:
+    if flagAnimal == 1:
         print("\nThere is no such animal or this animal hasn't been fed before, try again!!")
     else:
         newFeedingList = []
         for feed in feeding:
-            print(feed.date)
-            print(startDate)
-            print(feed.date < startDate)
-            if feed.date >= startDate and feed.date <= endDate:
-                newFeedingList.append(feed)
+            feedDate = parse(feed.date)
+            start = parse(startDate)
+            end = parse(endDate)
+            if feedDate >= start and feedDate <= end:
+                newFeedingList.append(str(feed.animal.animalNo)+" "+str(feed.food.name)+" "+str(feed.food.manufacturer)+" "+str(feed.food.weight)+" "+str(feed.staff.first_name)+" "+ str(feed.staff.last_name))
         print("\n-----------------------------------")
         print(newFeedingList)
         print("\n-----------------------------------")
         fileName = "FeedingDetails " + str(random.random())
         f = open(fileName, "a+")
-        for staff in newFeedingList:
-            print(staff)
-            f.write(str(staff)+"\n")
+        for feed in newFeedingList:
+            f.write(str(feed)+"\n")
         f.close()
     # except:
     #     print("\nSome Error occured, try again.\n")
@@ -252,46 +256,142 @@ def feedingDetails():
 # _____________________________________________________Observation________________________________________________________
 
 
-
-def foodDetails():
-    detailsFood = Food()
-    detailsFood.foodforGivenAnimal(14)
-
-
 def addObservation():
-    newObservation = Observation()
-    newObservation.set_observation(
-        1234, '25/06/2016', '10:33', 22, 11, "SALAM", "RASUL ALIYEV")
+    try:
+        print("Please type details of Observation\n")
+        animalNo = input("AnimalNo: ")
+        staffID = input("StaffId: ")
+        weight = input("Animal Weight (kg): ")
+        temperature = input("Temperature (C*): ")
+        note = input("Note: ")
+        animals = appliaction.getAllAnimal()
+        staffs = appliaction.getAllStaff()
+        flagAnimal = 1
+        flagStaff = 1
 
+        for animal in animals:
+            if animalNo == animal.animalNo:
+                flagAnimal = 0
+                animalObject = animal
+        if flagAnimal == 1:
+            print("\nThere is no such animal, try again!!")
+            for staff in staffs:
+                if staffID == staff.staff_id:
+                    staffObject = staff
+                    flagStaff = 0
+
+        if flagStaff == 1:
+            print("\nThere is no such staff, try again!!")
+
+        newObservation = Observation()
+        newObservation.set_observation(animal, weight, temperature, note, staff)
+        appliaction.addObservationingToList(newObservation)
+        print("\nAn observation record added successfully\n")
+    except:
+        print("\nSome Error occured, try again.\n")
+    main()
 
 def ReportObservation():
-    f = open("observation.txt", "r")
-    contents = f.read()
-    print("Details of Animal Observation")
-    print(contents)
-
-
-def observationDetails():
-    observationDetails = Observation()
-    observationDetails.details(22)
-
+    # try:
+    print("Please type Following details: \n")
+    animalnum = input("AnimalNo: ")
+    startDate = input("Start Date (12/08/2020):  ")
+    endDate = input("End Date (12/08/2020): ")
+    animals = appliaction.getAllAnimal()
+    observation = appliaction.getAllObservationDetails()
+    flagAnimal = 1
+    for observed in observation:
+        observed.animal
+        if animalnum == observed.animal.animalNo:
+            flagAnimal = 0
+    if flagAnimal == 1:
+        print("\nThere is no such animal or this animal hasn't been observed before, try again!!")
+    else:
+        newobservationList = []
+        for observed in observation:
+            observedDate = parse(observed.date)
+            start = parse(startDate)
+            end = parse(endDate)
+            if observedDate >= start and observedDate <= end:
+                newobservationList.append(str(observed.animal.animalNo)+" "+str(observed.date)+" "+str(observed.time)+" "+str(observed.weight)+" "+str(observed.temperature)+" "+ str(observed.note))
+        print("\n-----------------------------------")
+        print(newobservationList)
+        print("\n-----------------------------------")
+        fileName = "observationDetails " + str(random.random())
+        f = open(fileName, "a+")
+        for observed in newobservationList:
+            f.write(str(observed)+"\n")
+        f.close()
+    # except:
+    #     print("\nSome Error occured, try again.\n")
+    main()
 
 def staffWhoObserved():
-    observationDetails = Observation()
-    observationDetails.staffWhoObserved(1234)
+    # try:
+    print("Please type Following details: \n")
+    animalnum = input("AnimalNo: ")
+    startDate = input("Start Date (12/08/2020):  ")
+    endDate = input("End Date (12/08/2020): ")
+    animals = appliaction.getAllAnimal()
+    observation = appliaction.getAllObservationDetails()
+    flagAnimal = 1
+    for observed in observation:
+        observed.animal
+        if animalnum == observed.animal.animalNo:
+            flagAnimal = 0
+    if flagAnimal == 1:
+        print("\nThere is no such animal or this animal hasn't been observed before, try again!!")
+    else:
+        newobservationList = []
+        for observed in observation:
+            observedDate = parse(observed.date)
+            start = parse(startDate)
+            end = parse(endDate)
+            if observedDate >= start and observedDate <= end:
+                newobservationList.append(str(observed.staff.staff_id)+" "+str(observed.staff.first_name)+" "+str(observed.staff.last_name)+" "+str(observed.staff.office)+" "+str(observed.staff.tel))
+        print("\n-----------------------------------")
+        print(newobservationList)
+        print("\n-----------------------------------")
+        fileName = "observationDetails " + str(random.random())
+        f = open(fileName, "a+")
+        for observed in newobservationList:
+            f.write(str(observed)+"\n")
+        f.close()
+    # except:
+    #     print("\nSome Error occured, try again.\n")
+    main()
 
-# addStaff()
-# ReportStaff()
-# animalFeed()
-# ReportAnimal()
-# addFood()
-# feedingDetails()
-# foodDetails()
-# addAnimal()
-# addObservation()
-# ReportObservation()
-# observationDetails()
-# staffWhoObserved()
+def foodsGiven():
+     # try:
+    print("Please type Following details: \n")
+    animalnum = input("AnimalNo: ")
+    animals = appliaction.getAllAnimal()
+    feeding = appliaction.getAllFeedingDetails()
+    flagAnimal = 1
+    for fed in feeding:
+        fed.animal
+        if animalnum == fed.animal.animalNo:
+            flagAnimal = 0
+    if flagAnimal == 1:
+        print("\nThere is no such animal or this animal hasn't been fed before, try again!!")
+    else:
+        newFeedingList = []
+        print("\n-----------------------------------")
+
+        for feed in feeding:
+            if animalnum == feed.animal.animalNo:
+                newFeedingList.append(str(feed.food.name)+" "+str(feed.food.manufacturer))
+                print(newFeedingList)
+
+        print("\n-----------------------------------")
+        fileName = "GivenFoodDetails " + str(random.random())
+        f = open(fileName, "a+")
+        for feed in newFeedingList:
+            f.write(str(feed)+"\n")
+        f.close()
+    # except:
+    #     print("\nSome Error occured, try again.\n")
+    main()
 
 
 def main():
@@ -301,9 +401,9 @@ def main():
         print("\n\n--- Choose 1 of 10 choices ---\n\n")
         print("Choose 1 to add Staff")
         print("Choose 2 to add Animal")
-        print("Choose 3 to add Feeding Information")
-        print("Choose 4 to add Food")
-        print("Choose 5 to go to another menu")
+        print("Choose 3 to add Food")
+        print("Choose 4 to add Feeding Information")
+        print("Choose 5 to add Observation")
         print("Choose 6 for Details of all staff")
         print("Choose 7 for Details of all animals")
         print("Choose 8 for Details of Feeding")
@@ -317,9 +417,9 @@ def main():
         options = {
             1: addStaff,
             2: addAnimal,
-            3: animalFeed,
-            4: addFood,
-            5: "",
+            3: addFood,
+            4: animalFeed,
+            5: addObservation,
             6: ReportStaff,
             7: ReportAnimal,
             8: feedingDetails,

@@ -3,7 +3,8 @@ class Application:
     foodList = []
     animalList = []
     feedingList = []
-#________________________________________________________STAFF________________________________________________________
+    observationList = []
+#________________________________________________________Staff________________________________________________________
 
     def addStaffToList(self, staffObject):
         self.staffList.append(staffObject)
@@ -34,3 +35,11 @@ class Application:
 
     def getAllFeedingDetails(self):
         return self.feedingList
+
+#______________________________________________________Observation________________________________________________________
+
+    def addObservationingToList(self, ObservationObject):
+        self.observationList.append(ObservationObject)
+
+    def getAllObservationDetails(self):
+        return self.observationList

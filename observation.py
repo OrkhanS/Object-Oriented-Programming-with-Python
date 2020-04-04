@@ -1,18 +1,26 @@
 from random import randint
+from datetime import datetime
 
 class Observation:
-    def set_observation(self, a_id, date, time, weight, temperature, note, staff):
-        self.a_id = a_id
+    def set_observation(self, animal, weight, temperature, note, staff):
+        now = datetime.now()
+        year = now.strftime("%Y")
+        month = now.strftime("%m")
+        day = now.strftime("%d")
+        time = now.strftime("%H:%M")
+        date = day+"/"+month+"/"+year
+        self.animal = animal
         self.date = date
         self.time = time
         self.weight = weight
         self.note = note
         self.temperature = temperature
         self.staff = staff
-        print("\nAnimals should be observer more than three times a day!!")
-        f = open("observation.txt", "a+")
-        f.write("\n"+str(a_id)+' '+str(date)+' '+str(time)+' '+str(weight)+' '+str(temperature)+' '+str(note)+' '+staff)
-    
+
+    def getDetailsofAnimalFeed(self):
+        return {"animal": self.animal, "date":self.date, "time":self.time, "weight": self.weight, "staff": self.staff, "temperature":temperature, "note":note }
+
+
     def details(self, id):
         with open('observation.txt') as f:
             i=0
