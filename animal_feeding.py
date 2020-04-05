@@ -1,7 +1,7 @@
 from random import randint
 from datetime import datetime
 
-class Animal_feeding:  
+class Animal_feeding:
     def feed(self, animal, food, staff):
         now = datetime.now()
         year = now.strftime("%Y")
