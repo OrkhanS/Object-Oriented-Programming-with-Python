@@ -11,6 +11,7 @@ This is Assignment 1 of Software Development course.
 Download the files first, open CMD and write following code:
 
 ```bash
+pip install prettytable
 python main.py
 ```
 
